@@ -3,15 +3,15 @@ const moment = require('moment');
 const { LAST_BLOCKS_NUMBER_FOR_CALCULATING_AVG_APS_TPS } = require('config');
 const { BlockModelV2, StateModelV2 } = require('../../db');
 const { SECOND } = require('../../constants');
-const { eosApi, pickAs, logInfo, setSensitiveInterval, logError } = require('../../helpers');
+const { potatoApi, pickAs, logInfo, setSensitiveInterval, logError } = require('../../helpers');
 const getActionsCount = require('../../routines/handleBlock/getActionsCount');
 const createBlockDataComposer = require('../../handlers/info/blockDataComposer');
 
 const getBlockFromChain = async (blockNum) => {
   const [beforePrevious, previous, current] = await Promise.all([
-    eosApi.getBlock(blockNum - 2),
-    eosApi.getBlock(blockNum - 1),
-    eosApi.getBlock(blockNum),
+    potatoApi.get_block(blockNum - 2),
+    potatoApi.get_block(blockNum - 1),
+    potatoApi.get_block(blockNum),
   ]);
   let blockTps;
   let blockAps;
@@ -63,7 +63,7 @@ const fillGap = async () => {
     const startTs = Date.now();
     const { lastFilledBlock } = (await StateModelV2.findOne({ id: 1 }).select('utils').exec()).utils.fillBlockGaps;
     if (lastFilledBlock + 1 < 21) {
-      const block = await eosApi.getBlock(lastFilledBlock + 1);
+      const block = await potatoApi.get_block(lastFilledBlock + 1);
       const chartBlock = {
         blockNumber: lastFilledBlock + 1,
         producer: block.producer,
@@ -81,13 +81,13 @@ const fillGap = async () => {
     const composer = createBlockDataComposer();
     const previousBlocks = await getPreviousBlocks(lastFilledBlock + 1);
     composer.updateStorage({
-      previous: await eosApi.getBlock(lastFilledBlock + 1),
+      previous: await potatoApi.get_block(lastFilledBlock + 1),
       previous_live_aps: previousBlocks.map(b => b.blockAps),
       previous_live_tps: previousBlocks.map(b => b.blockTps),
       replacedNumber: LAST_BLOCKS_NUMBER_FOR_CALCULATING_AVG_APS_TPS,
     });
     const block = composer.composeData({
-      block: await eosApi.getBlock(lastFilledBlock + 1),
+      block: await potatoApi.get_block(lastFilledBlock + 1),
     });
     const chartBlock = pickAs(block, {
       blockNumber: 'block_num',

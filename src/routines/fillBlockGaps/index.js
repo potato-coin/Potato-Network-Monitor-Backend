@@ -3,7 +3,7 @@ const moment = require('moment');
 const { LAST_BLOCKS_NUMBER_FOR_CALCULATING_AVG_APS_TPS } = require('config');
 const { BlockModelV2 } = require('../../db');
 const { DAY, SECOND } = require('../../constants');
-const { eosApi, pickAs, logInfo, logError } = require('../../helpers');
+const { potatoApi, pickAs, logInfo, logError } = require('../../helpers');
 const getActionsCount = require('../../routines/handleBlock/getActionsCount');
 const createBlockDataComposer = require('../../handlers/info/blockDataComposer');
 
@@ -17,9 +17,9 @@ const getBlockNumbersForPeriod = async ({ from, to }) =>
 
 const getBlockFromChain = async (blockNum) => {
   const [beforePrevious, previous, current] = await Promise.all([
-    eosApi.getBlock(blockNum - 2),
-    eosApi.getBlock(blockNum - 1),
-    eosApi.getBlock(blockNum),
+    potatoApi.get_block(blockNum - 2),
+    potatoApi.get_block(blockNum - 1),
+    potatoApi.get_block(blockNum),
   ]);
   let blockTps;
   let blockAps;
@@ -82,13 +82,13 @@ const fillGap = async (gapNumber) => {
   const composer = createBlockDataComposer();
   const previousBlocks = await getPreviousBlocks(gapNumber);
   composer.updateStorage({
-    previous: await eosApi.getBlock(gapNumber - 1),
+    previous: await potatoApi.get_block(gapNumber - 1),
     previous_live_aps: previousBlocks.map(b => b.blockAps),
     previous_live_tps: previousBlocks.map(b => b.blockTps),
     replacedNumber: LAST_BLOCKS_NUMBER_FOR_CALCULATING_AVG_APS_TPS,
   });
   const block = composer.composeData({
-    block: await eosApi.getBlock(gapNumber),
+    block: await potatoApi.get_block(gapNumber),
   });
   const chartBlock = pickAs(block, {
     blockNumber: 'block_num',

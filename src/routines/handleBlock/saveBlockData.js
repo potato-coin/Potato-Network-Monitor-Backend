@@ -48,7 +48,7 @@ const saveBlockData = async ({ transactions, producer }) => {
   // collect data
   const transactionsInfo = transactions.map(t => t.txInfo);
 
-  const actionsFilter = a => a.action === 'transfer' && a.account !== 'eosio.token';
+  const actionsFilter = a => a.action === 'transfer' && a.account !== 'pc.token';
 
   const groupByRecipients = (result, a) => ({
     ...result,

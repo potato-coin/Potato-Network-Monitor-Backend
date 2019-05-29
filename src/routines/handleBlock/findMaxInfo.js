@@ -1,17 +1,17 @@
 /* eslint-disable no-param-reassign */
 const getActionsCount = require('./getActionsCount');
-const { createEosApi } = require('../../helpers');
+const { createPotatoApi } = require('../../helpers');
 const { SECOND } = require('../../constants');
 
-const eosApi = createEosApi();
+const potatoApi = createPotatoApi();
 
 const findMaxInfo = async ({ current = { transactions: [] }, previous, max_tps = 0, max_aps = 0 }) => {
-  if (!current.block_num){
-      return null;
+  if (!current.block_num) {
+    return null;
   }
   if (!previous || !previous.block_num) {
     console.log('Not previous');
-    previous = await eosApi.getBlock(current.block_num - 1);
+    previous = await potatoApi.get_block(current.block_num - 1);
   }
   const currentTs = Date.parse(current.timestamp);
   const previousTs = Date.parse(previous.timestamp);
@@ -36,7 +36,7 @@ const findMaxInfo = async ({ current = { transactions: [] }, previous, max_tps =
     // find number of transactions for 0.5 sec for previous block
     if (!previous.producedInSeconds) {
       console.log('Not producedInSeconds');
-      const beforePrevious = await eosApi.getBlock(previous.block_num - 1);
+      const beforePrevious = await potatoApi.get_block(previous.block_num - 1);
       previous.producedInSeconds = (Date.parse(previous.timestamp) - Date.parse(beforePrevious.timestamp)) / SECOND;
     }
     let currProducedInSec = (Date.parse(current.timestamp) - Date.parse(previous.timestamp)) / SECOND;

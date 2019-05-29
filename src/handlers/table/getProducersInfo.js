@@ -3,7 +3,7 @@ const { TIMESTAMP_EPOCH } = require('config');
 
 const { ProducerModelV2 } = require('../../db');
 
-const { eosApi, castToInt, pickAs } = require('../../helpers');
+const { potatoApi, castToInt, pickAs } = require('../../helpers');
 const { CHECK_URLS } = require('../../constants');
 
 const calculateEosFromVotes = votes => {
@@ -23,7 +23,7 @@ const convertFieldsFromStringToArr = fields => fields.split(' ').map(s => s.trim
 
 
 const getProducersInfo = async () => {
-  const { total_producer_vote_weight } = await eosApi.getProducers({ json: true, limit: 1 });
+  const { total_producer_vote_weight } = await potatoApi.get_producers(true, null, 1);
   const onePercent = castToInt(total_producer_vote_weight) / 100;
   const fields =
     `url

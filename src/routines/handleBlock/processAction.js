@@ -1,5 +1,5 @@
 const uniq = require('lodash/uniq');
-const { eosApi, createLogger, castToString } = require('../../helpers');
+const { potatoApi, createLogger, castToString } = require('../../helpers');
 
 const { info: logInfo } = createLogger();
 
@@ -17,7 +17,7 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
 
   if (typeof data === 'string') {
     try {
-      data = await eosApi.abiBinToJson({ code: account, action: name, binargs: data });
+      data = await potatoApi.abi_bin_to_json({ code: account, action: name, binargs: data });
       result.isSerialized = true;
     } catch (e) {
       logInfo(`Action from ${id} is broken. The data defined in the ABI (${data}) is invalid`);
@@ -77,7 +77,7 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
         name: data.name,
         createdBy: data.creator,
         date: transaction.expiration,
-        balances: { EOS: 0 },
+        balances: { POC: 0 },
         createdAccounts: [],
       };
       result.newAccount = newAcc;
@@ -367,7 +367,7 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
     }
   }
 
-  if (account === 'eosio') {
+  if (account === 'potato') {
     switch (name) {
       case 'issue': {
         const issueCurrency = `${data.quantity}`.split(' ');
@@ -406,7 +406,7 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
         const currobjfrom = {};
 
         let mult = 1;
-        if (transferCurrency[1] === 'EOS') {
+        if (transferCurrency[1] === 'POC') {
           mult = 10000;
         }
 
@@ -460,10 +460,10 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
 
   if (name === 'voteproducer') {
     if (data.voter) {
-      const stdout_obj = await eosApi.getAccount({ account_name: data.voter });
+      const stdout_obj = await potatoApi.get_account({ account_name: data.voter });
 
       if (stdout_obj.total_resources == null) {
-        stdout_obj.total_resources = { ram_bytes: 0, net_weight: '? EOS', cpu_weight: '? EOS' };
+        stdout_obj.total_resources = { ram_bytes: 0, net_weight: '? POC', cpu_weight: '? POC' };
       }
       txInfo.msgObject.c5 = `NET: ${stdout_obj.total_resources.net_weight} <BR>CPU: ${
         stdout_obj.total_resources.cpu_weight
@@ -471,10 +471,10 @@ const processAction = ({ block_num, transaction, id, producer, withSubActions = 
       const net = stdout_obj.total_resources.net_weight.split(' ');
       const cpu = stdout_obj.total_resources.cpu_weight.split(' ');
 
-      txInfo.msgObject.c6 = `TOTAL: ${Math.round((net[0] * 1 + cpu[0] * 1) * 10000) / 10000} EOS`;
+      txInfo.msgObject.c6 = `TOTAL: ${Math.round((net[0] * 1 + cpu[0] * 1) * 10000) / 10000} POC`;
     } else {
       txInfo.msgObject.c5 = 'NET: ERROR <BR>CPU: ERROR <BR>';
-      txInfo.msgObject.c6 = 'TOTAL: ERROR EOS';
+      txInfo.msgObject.c6 = 'TOTAL: ERROR POC';
     }
   }
   txInfo.msgObject = Object.keys(txInfo.msgObject).reduce((res, key) => ({

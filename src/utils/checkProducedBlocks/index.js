@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const { eosApi, createLogger } = require('../../helpers');
+const { potatoApi, createLogger } = require('../../helpers');
 const { StateModelV2, ProducerModelV2 } = require('../../db');
 const processMissedBlocks = require('./processMissedBlocks');
 
@@ -38,7 +38,7 @@ const handleBlock = async () => {
       logInfo('Checking produced blocks finished!');
       return;
     }
-    const block = await eosApi.getBlock(lastCheckedBlock + 1);
+    const block = await potatoApi.get_block(lastCheckedBlock + 1);
     await processMissedBlocks({ current: block, previous });
     previous = { ...block };
     await saveData(block);

@@ -3,7 +3,7 @@ const moment = require('moment');
 const { APPROXIMATELY_BLOCKS_PRODUCED_PER_DAY } = require('config');
 
 const { ProducerModelV2, StateModelV2 } = require('../../db');
-const { castToInt, createEosApi, pickAs, logInfo, logError } = require('../../helpers');
+const { castToInt, createPotatoApi, pickAs, logInfo, logError } = require('../../helpers');
 const {
   BLOCK_REWARDS_PART,
   VOTE_REWARDS_PART,
@@ -12,7 +12,7 @@ const {
   EXPECTED_CALCULATING_TIMES_FOR_DAY,
 } = require('../../constants');
 
-const api = createEosApi();
+const api = createPotatoApi();
 
 const setRewardsToZero = async () => {
   await ProducerModelV2.updateMany({}, { $set: { rewards_per_day: 0, produced_per_day: 0 } }).exec();
@@ -20,8 +20,8 @@ const setRewardsToZero = async () => {
 };
 
 const getInflation = async () => {
-  const systemData = await api.getCurrencyStats({ symbol: 'EOS', code: 'eosio.token' });
-  const totalSupply = castToInt(systemData.EOS.supply.split(' ')[0]);
+  const systemData = await api.get_currency_stats('pc.token', 'POC');
+  const totalSupply = castToInt(systemData.POC.supply.split(' ')[0]);
   return totalSupply / 100 / 365;
 };
 
@@ -70,7 +70,7 @@ const calculateRewardsForOne = ({
 };
 
 const calculateRewards = async () => {
-  const { total_producer_vote_weight } = await api.getProducers({ json: true, limit: 1 });
+  const { total_producer_vote_weight } = await api.get_producers(true, null, 1);
   const onePercentVoteWeight = castToInt(total_producer_vote_weight) / 100;
   const totalProducedPerDay = APPROXIMATELY_BLOCKS_PRODUCED_PER_DAY;
   const inflation = await getInflation();
@@ -92,7 +92,7 @@ const calculateRewards = async () => {
     .map(e => e.producedTimesForDay)
     .reduce((max, current) => (current > max ? current : max), 0);
 
-  // sum of all undistributed percents that belongs to producers who  not cross the threshold in 100 EOS
+  // sum of all undistributed percents that belongs to producers who  not cross the threshold in 100 POC
   const undistributedInterest = producers.reduce((res, val) => {
     const accountPercentage = getAccountPercentage({ onePercentVoteWeight, total_votes: val.total_votes });
     return accountPercentage < minimumPercentForThreshold

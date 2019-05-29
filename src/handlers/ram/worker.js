@@ -1,5 +1,5 @@
 const { RAM_CHECK_INTERVAL } = require('config');
-const { eosApi, logError, setSensitiveInterval } = require('../../helpers');
+const { potatoApi, logError, setSensitiveInterval } = require('../../helpers');
 const { connect, RamModelV2 } = require('../../db');
 const { KILOBYTE } = require('../../constants');
 
@@ -24,10 +24,10 @@ const notify = (ram) => {
 
 const updateRam = async () => {
   try {
-    const { rows: [ramInfo] } = await eosApi.getTableRows({
+    const { rows: [ramInfo] } = await potatoApi.get_table_rows({
       json: true,
-      code: 'eosio',
-      scope: 'eosio',
+      code: 'potato',
+      scope: 'potato',
       table: 'rammarket',
       limit: 10,
     });

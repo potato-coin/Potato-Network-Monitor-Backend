@@ -2,13 +2,13 @@ const {
   LISTENERS: { ON_TOTAL_STACKED_CHANGE_INTERVAL },
   TOTAL_STACKED_CHECK_INTERVAL,
 } = require('config');
-const { createEosApi, castToInt, logError } = require('../../helpers');
+const { createPotatoApi, castToInt, logError } = require('../../helpers');
 
-const eosApi = createEosApi();
+const potatoApi = createPotatoApi();
 
 const getTotalStacked = async () => {
   try {
-    const [stake] = await eosApi.getCurrencyBalance('eosio.token', 'eosio.stake');
+    const [stake] = await potatoApi.get_currency_balance('pc.token', 'pc.stake');
 
     return castToInt(stake.split(' ')[0]) * 10000;
   } catch (e) {

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const { START_BLOCKS_HANDLING_FROM } = require('config');
-const { eosApi, logError, logInfo } = require('../../helpers');
+const { potatoApi, logError, logInfo } = require('../../helpers');
 const { StateModelV2 } = require('../../db');
 const extractData = require('./extractData');
 const findMaxInfo = require('./findMaxInfo');
@@ -17,12 +17,12 @@ const handleBlock = async () => {
     if (!checkedData2.startFromBlock) {
       await StateModelV2.updateOne({ id: 1 }, { 'checkedData2.startFromBlock': lastHandledBlock + 1 }).exec();
     }
-    const { last_irreversible_block_num } = await eosApi.getInfo();
+    const { last_irreversible_block_num } = await potatoApi.get_info();
     if (last_irreversible_block_num <= lastHandledBlock) {
       setTimeout(handleBlock, 500);
       return;
     }
-    const block = await eosApi.getBlock(lastHandledBlock + 1);
+    const block = await potatoApi.get_block(lastHandledBlock + 1);
     processMissedBlocks({ current: block, previous });
     const max = await findMaxInfo({ current: block, previous, max_aps, max_tps });
     block.producedInSeconds = (Date.parse(block.timestamp) - Date.parse(previous.timestamp)) / SECOND;
@@ -48,7 +48,7 @@ const startHandleBlock = async () => {
   if (!state) {
     await new StateModelV2({
       id: 1,
-      lastHandledBlock: START_BLOCKS_HANDLING_FROM || (await eosApi.getInfo({})).head_block_num,
+      lastHandledBlock: START_BLOCKS_HANDLING_FROM || (await potatoApi.get_info()).head_block_num,
     }).save();
   }
 

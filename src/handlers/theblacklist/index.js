@@ -1,13 +1,13 @@
 const crypto = require('crypto');
 const difference = require('lodash/difference');
 const uniq = require('lodash/uniq');
-const { createEosApi, logError } = require('../../helpers');
+const { createPotatoApi, logError } = require('../../helpers');
 
-const eosApi = createEosApi();
+const potatoApi = createPotatoApi();
 
 const getBlackList = async () => {
   try {
-    const { rows: data } = await eosApi.getTableRows({
+    const { rows: data } = await potatoApi.get_table_rows({
       scope: 'theblacklist',
       code: 'theblacklist',
       table: 'theblacklist',

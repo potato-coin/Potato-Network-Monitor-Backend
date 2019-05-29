@@ -1,21 +1,21 @@
 /* eslint-disable no-await-in-loop */
 const { NODE_WITH_HISTORY } = require('config');
-const { createEosApi, createLogger } = require('../../helpers/index');
+const { createPotatoApi, createLogger } = require('../../helpers/index');
 const { AccountModelV2 } = require('../../db/index');
 
 const MILLION = 1000 * 1000;
 
 const { info: logInfo, error: logError } = createLogger();
 
-const eosApi = createEosApi(
+const potatoApi = createPotatoApi(
   NODE_WITH_HISTORY
     ? { host: NODE_WITH_HISTORY.HOST, port: NODE_WITH_HISTORY.PORT, isVariable: false }
-    : { host: 'http://history.cryptolions.io', port: '80', isVariable: false },
+    : { host: 'https://potato.jocky123.com', port: '443', isVariable: false },
 );
 
 const actionsFilter = a =>
   a.action_trace.act.name === 'transfer'
-  && a.action_trace.act.account !== 'eosio.token';
+  && a.action_trace.act.account !== 'pc.token';
 
 const groupTokenNames = (result, a) => ({
   ...result,
@@ -29,7 +29,7 @@ module.exports = async () => {
     for (let i = 0; i < accounts.length; i += 1) {
       const startTs = Date.now();
       const account = accounts[i];
-      const { actions } = await eosApi.getActions(account.name, -1, -MILLION);
+      const { actions } = await potatoApi.get_actions(account.name, -1, -MILLION);
       const tokens = Object.keys(
         actions
           .filter(actionsFilter)

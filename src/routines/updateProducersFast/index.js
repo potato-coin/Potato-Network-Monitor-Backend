@@ -1,6 +1,6 @@
 /* eslint-disable camelcase,no-plusplus,max-len */
 const differenceBy = require('lodash/differenceBy');
-const { eosApi, createLogger } = require('../../helpers');
+const { potatoApi, createLogger } = require('../../helpers');
 const { ProducerModelV2, UnregisteredModel } = require('../../db');
 
 const SETTLED_PRODUCERS_COUNT = 200;
@@ -9,7 +9,7 @@ const { info: logInfo, error: logError } = createLogger();
 
 module.exports = async () => {
   try {
-    const { rows } = await eosApi.getProducers({ json: true, limit: 1000 });
+    const { rows } = await potatoApi.get_producers(true, null, 1000);
     const producers = rows.slice(0, SETTLED_PRODUCERS_COUNT);
     await UnregisteredModel.updateMany(
       { name: { $in: producers.map(p => p.owner) }, reregisteredTs: { $eq: null } },

@@ -9,14 +9,14 @@
 #
 ###############################################################################  */
 
-const { eosApi, createLogger } = require('../../helpers');
+const { potatoApi, createLogger } = require('../../helpers');
 const handleData = require('./handleData');
 
 const { info: logInfo, error: logError } = createLogger();
 
 module.exports = async () => {
   try {
-    const producersSystem = await eosApi.getProducers({ json: true, limit: 1000 });
+    const producersSystem = await potatoApi.get_producers(true, null, 1000);
     await handleData(producersSystem.rows);
     logInfo('producers info updated');
   } catch (e) {

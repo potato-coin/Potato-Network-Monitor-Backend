@@ -7,7 +7,7 @@ const Account = new Schema(
     createdAccounts: { type: [String], index: true },
     date: { type: Date, default: Date.now },
     balances: {
-      EOS: { type: Number, default: 0.0 },
+      POC: { type: Number, default: 0.0 },
     },
     tokenData: {
       tokenSyncedAt: { type: Date, default: Date.now },

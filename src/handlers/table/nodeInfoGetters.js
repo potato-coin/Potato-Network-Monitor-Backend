@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop,no-continue */
 const { ProducerModelV2 } = require('../../db');
-const { createEosApi } = require('../../helpers');
+const { createPotatoApi } = require('../../helpers');
 const {
   SERVER_NOT_FOUND,
   CHECK_URLS,
@@ -8,12 +8,12 @@ const {
 } = require('../../constants');
 
 const processNodeAndGetInfo = async (host, port, name, nodeId, wasEnabled) => {
-  const localEosApi = createEosApi({ host, port, isVariable: false, onlyRequest: name === 'eostribeprod' });
+  const localPotatoApi = createPotatoApi({ host, port, isVariable: false, onlyRequest: name === 'eostribeprod' });
   const startTs = Date.now();
   let info;
 
   try {
-    info = await localEosApi.getInfo({});
+    info = await localPotatoApi.get_info();
     if (!wasEnabled && nodeId) {
       ProducerModelV2.updateOne(
         { name, 'nodes._id': nodeId },

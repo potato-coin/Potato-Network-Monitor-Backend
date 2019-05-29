@@ -1,9 +1,9 @@
-const { createEosApi, createLogger } = require('../../helpers');
+const { createPotatoApi, createLogger } = require('../../helpers');
 const { TransactionModelV2, StateModelV2 } = require('../../db');
 const findMaxInfo = require('../../routines/handleBlock/findMaxInfo');
 
 const { info: logInfo } = createLogger();
-const api = createEosApi();
+const api = createPotatoApi();
 
 const check = async () => {
   const [{ transactions: maxPerOneBlock }] = await TransactionModelV2.aggregate([
@@ -22,11 +22,11 @@ const check = async () => {
   logInfo(blocks);
 
   const handledBlocks = await Promise.all(blocks.map(async block => ({
-    previous: await api.getBlock(block._id),
-    current: await api.getBlock(block._id + 1),
+    previous: await api.get_block(block._id),
+    current: await api.get_block(block._id + 1),
   })).concat(blocks.map(async block => ({
-    previous: await api.getBlock(block._id - 1),
-    current: await api.getBlock(block._id),
+    previous: await api.get_block(block._id - 1),
+    current: await api.get_block(block._id),
   }))));
   const res = handledBlocks.reduce((acc, val) => {
     const max = findMaxInfo({ ...val, ...acc });

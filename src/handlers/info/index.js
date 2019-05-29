@@ -1,6 +1,6 @@
 const { fork } = require('child_process');
 const Path = require('path');
-const { eosApi, logError } = require('../../helpers');
+const { potatoApi, logError } = require('../../helpers');
 
 const listeners = [];
 
@@ -29,7 +29,7 @@ const initInfoHandler = async () => {
       listeners.push(listener);
     },
     getBlockInfo(blockNum) {
-      return eosApi.getBlock(blockNum);
+      return potatoApi.get_block(blockNum);
     },
   };
 };

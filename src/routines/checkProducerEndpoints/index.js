@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-const { EOS: { GET_INFO_API_PATH } } = require('config');
+const { POTATO: { GET_INFO_API_PATH } } = require('config');
 const request = require('request-promise-native');
 const flatten = require('lodash/flatten');
 
-const { createLogger, createEosApi } = require('../../helpers');
+const { createLogger, createPotatoApi } = require('../../helpers');
 const { ProducerModelV2 } = require('../../db');
 
 const { error: logError, info: logInfo } = createLogger();
@@ -52,7 +52,7 @@ module.exports = async () => {
       const isSiteAvailable = await checkEndpointAvailability(p.url);
       const endpoints = await Promise.all(getEndpoints(p).map(async ({ host, port, _id: nodeId }) => {
         try {
-          const endpointInfo = await createEosApi({ host, port, isVariable: false }).getInfo();
+          const endpointInfo = await createPotatoApi({ host, port, isVariable: false }).get_info();
           return {
             endpoint: `${host}:${port}${GET_INFO_API_PATH}`,
             isWorking: true,

@@ -1,4 +1,4 @@
-const { eosApi } = require('../../helpers');
+const { potatoApi } = require('../../helpers');
 
 const findNextProducer = (list, current) => {
   const currentIndex = list.indexOf(current);
@@ -10,7 +10,7 @@ let previous = {};
 let blockNum = 0;
 
 const getBlockInfo = async (schedule) => {
-  const info = await eosApi.getInfo({});
+  const info = await potatoApi.get_info();
   if (!blockNum) {
     blockNum = info.head_block_num;
   }
@@ -18,7 +18,7 @@ const getBlockInfo = async (schedule) => {
   const number = info.head_block_num;
   let block;
   try {
-    block = await eosApi.getBlock(blockNum);
+    block = await potatoApi.get_block(blockNum);
     previous = block;
     blockNum += 1;
   } catch (e) {

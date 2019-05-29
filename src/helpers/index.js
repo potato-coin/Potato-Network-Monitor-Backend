@@ -2,7 +2,7 @@ const { correctBpUrl, correctApiUrl, correctP2PUrl, correctSslUrl } = require('.
 
 const { createLogger } = require('./logger');
 
-const createEosApi = require('./createEosApi');
+const createPotatoApi = require('./createPotatoApi');
 
 const castToInt = require('./castToNumber');
 const castToString = require('./castToString');
@@ -23,8 +23,8 @@ module.exports = {
   createLogger,
   logInfo,
   logError,
-  createEosApi,
-  eosApi: createEosApi(),
+  createPotatoApi,
+  potatoApi: createPotatoApi(),
   castToInt,
   castToString,
   pickAs,

@@ -8,7 +8,7 @@ const {
   correctP2PUrl,
   correctSslUrl,
   createLogger,
-  eosApi,
+  potatoApi,
 } = require('../../helpers');
 const { ProducerModelV2 } = require('../../db');
 
@@ -42,13 +42,14 @@ let PRODUCERS_WITHOUT_BP_JSON = [];
 const handleData = async producers => {
   PRODUCERS_WITHOUT_URL = [];
   PRODUCERS_WITHOUT_BP_JSON = [];
-  const { rows: blackListaHahes } = await eosApi.getTableRows({
-    scope: 'theblacklist',
-    code: 'theblacklist',
-    table: 'producerhash',
-    json: true,
-    limit: 10000,
-  });
+  // const { rows: blackListaHahes } = await potatoApi.get_table_rows({
+  //   scope: 'theblacklist',
+  //   code: 'theblacklist',
+  //   table: 'producerhash',
+  //   json: true,
+  //   limit: 10000,
+  // });
+  const blackListaHahes = [];
   const promises = Promise.all(
     producers
       .map(producer => ({

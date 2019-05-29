@@ -2,7 +2,7 @@
 const {
   UPDATE_TRANSACTIONS: { FROM_BLOCK_NUM, TO_BLOCK_NUM, DEFAULT_VALUE },
 } = require('config');
-const { eosApi, createLogger } = require('../../helpers');
+const { potatoApi, createLogger } = require('../../helpers');
 const { StateModelV2 } = require('../../db');
 const extractData = require('../../routines/handleBlock/extractData');
 const findMaxInfo = require('../../routines/handleBlock/findMaxInfo');
@@ -42,7 +42,7 @@ const startHandleBlock = async () => {
         return;
       }
       await StateModelV2.update({ id: 1 }, { $inc: { 'utils.updateTransactions.lastCheckedBlock': 1 } });
-      const block = await eosApi.getBlock(lastCheckedBlock + 1);
+      const block = await potatoApi.get_block(lastCheckedBlock + 1);
       const max = findMaxInfo({ current: block, previous, max_aps, max_tps });
       block.producedInSeconds = (Date.parse(block.timestamp) - Date.parse(previous.timestamp)) / SECOND;
       previous = block;

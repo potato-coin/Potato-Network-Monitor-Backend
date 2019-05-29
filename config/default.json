@@ -5,7 +5,7 @@
   },
   "VERSION": "2.0",
   "NODE": {
-    "HOST": "https://bp.cryptolions.io",
+    "HOST": "https://potato.jocky123.com",
     "PORT": "443",
     "ALLOWABLE_MAX_PING": 150 // in ms. When ping is greater than this value, the node will be changed
   },
@@ -24,19 +24,19 @@
     "PORT": "443"
   },
   "MONGODB": {
-    "ADDRESS": "mongodb://localhost:27017/",
+    "ADDRESS": "mongodb://192.168.0.71:27017/",
     "DB_NAME": "MainNet",
     "AUTH_IS_REQUIRED": false,
     "AUTH_SOURCE": "admin",
     "USER": "eosdev23",
     "PASSWORD": "eosdev23"
   },
-  "EOS": {
-    "GET_INFO_API_PATH": "/v1/chain/get_info", // api_get_info
-    "GET_BLOCK_API_PATH": "/v1/chain/get_block", // api_get_block
-    "ACCOUNT_CREATOR": "eosio", // "lion",
+  "POTATO": {
+    "GET_INFO_API_PATH": "/potato/chain/get_info", // api_get_info
+    "GET_BLOCK_API_PATH": "/potato/chain/get_block", // api_get_block
+    "ACCOUNT_CREATOR": "potato", // "lion",
     "FAUCET_SUME": 1000000,
-    "FAUCET_SUME_TOKEN1": "100.0000 EOS",
+    "FAUCET_SUME_TOKEN1": "100.0000 POC",
     "FAUCET_SUME_TOKEN2": "100.0000 JUNGLE"
   },
   "TELEGRAM": {
@@ -89,7 +89,7 @@
   "MAX_TRANSACTIONS_PER_CONNECT_BY_SOCKET": 50,
   "ALLOWABLE_NON_SYNCHRONIZED_DIFFERENCE_IN_BLOCKS": 100,
   "LAST_BLOCKS_NUMBER_FOR_CALCULATING_AVG_APS_TPS": 20,
-  "START_BLOCKS_HANDLING_FROM": 1, // if 0 -> start from last block
+  "START_BLOCKS_HANDLING_FROM": 2, // if 0 -> start from last block
   "UPDATE_TRANSACTIONS": {
     "FROM_BLOCK_NUM": 9582205,
     "TO_BLOCK_NUM": 10026035,

@@ -5,7 +5,7 @@ const {
 const moment = require('moment');
 const uniqBy = require('lodash/uniqBy');
 
-const { eosApi, createLogger, castToInt, pickAs } = require('../../helpers');
+const { potatoApi, createLogger, castToInt, pickAs } = require('../../helpers');
 const { StateModelV2, BlockModelV2, connect } = require('../../db');
 const { BLOCK_CHART_PERIOD, RESTORE_BLOCK_CHART_INTERVAL, KILOBYTE } = require('../../constants');
 const getBlockInfo = require('./getBlockInfo');
@@ -107,13 +107,13 @@ const getInfo = async () => {
 const getAdditionalInfo = async () => {
   try {
     const { rows: [tableInfo] } =
-      await eosApi.getTableRows({ json: true, scope: 'eosio', code: 'eosio', table: 'global' });
-    const { core_liquid_balance: coreLiquidBalance } = await eosApi.getAccount({ account_name: 'eosio.ramfee' });
-    const [savingTotalBalance] = await eosApi.getCurrencyBalance('eosio.token', 'eosio.saving');
-    const { rows: [ramInfo] } = await eosApi.getTableRows({
+      await potatoApi.get_table_rows({ json: true, scope: 'potato', code: 'potato', table: 'global' });
+    const { core_liquid_balance: coreLiquidBalance } = await potatoApi.get_account({ account_name: 'pc.ramfee' });
+    const [savingTotalBalance] = await potatoApi.get_currency_balance('pc.token', 'pc.saving');
+    const { rows: [ramInfo] } = await potatoApi.get_table_rows({
       json: true,
-      code: 'eosio',
-      scope: 'eosio',
+      code: 'potato',
+      scope: 'potato',
       table: 'rammarket',
       limit: 1,
     });
@@ -143,7 +143,7 @@ const getAdditionalInfo = async () => {
 const initInfoHandler = async () => {
   await connect();
   await restoreChart();
-  schedule = await eosApi.getProducerSchedule({});
+  schedule = await potatoApi.get_producer_schedule({});
   getInfo();
   setInterval(getAdditionalInfo, GET_GENERAL_ADDITIONAL_INFO_INTERVAL);
   setInterval(restoreChart, RESTORE_BLOCK_CHART_INTERVAL);
