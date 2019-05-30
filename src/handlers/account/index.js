@@ -16,19 +16,19 @@ const getBalanceFor = async (name, token) => {
 const getBalancesFor = async name => {
   const account = await AccountModelV2.findOne({ name }).select('tokenData.tokens').exec();
   const tokens = account && account.tokenData && account.tokenData.tokens || [];
-  const eosBalancePromise = potatoApi.get_currency_balance('pc.token', name);
+  const potatoBalancePromise = potatoApi.get_currency_balance('pc.token', name);
   const otherBalancePromises = tokens.map(t => getBalanceFor(name, t));
-  const balances = await Promise.all([eosBalancePromise].concat(otherBalancePromises));
+  const balances = await Promise.all([potatoBalancePromise].concat(otherBalancePromises));
   return flatten(balances).filter(b => b);
 };
 
 const initAccountHandler = () => ({
   async getAccount(account_name) {
     try {
-      if (!account_name || account_name.length > 13) {
+      if (!account_name || account_name.length > 21) {
         return {};
       }
-      const account = await potatoApi.get_account({ account_name });
+      const account = await potatoApi.get_account(account_name);
       const balances = await getBalancesFor(account_name);
       return { ...account, balance: (balances && balances[0]) || '0.0 POC', balances: balances.slice(1) };
     } catch (e) {

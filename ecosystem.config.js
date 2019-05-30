@@ -8,6 +8,7 @@ module.exports = {
       name: 'routine',
       script: 'npm',
       args: 'run start-routine',
+      watch: true,
       env: {
         NODE_ENV: 'development',
       },
@@ -22,6 +23,7 @@ module.exports = {
       name: 'app',
       script: 'npm',
       args: 'run start-app',
+      watch: true,
       env: {
         NODE_ENV: 'development',
         PORT: 3000,

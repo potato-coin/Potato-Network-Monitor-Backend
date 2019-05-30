@@ -66,13 +66,12 @@ const init = ({ app, handlers }) => {
   app.get(`${API_PREFIX}/transactions/:txid/`, async (req, res) => {
     const { txid } = req.params;
     requestMain.get(`${NODE_WITH_HISTORY.HOST}:${NODE_WITH_HISTORY.PORT}/v1/history/get_transaction/${txid}`).pipe(res);
-    /*try {
+    /* try {
       const tx = await TransactionModelV2.findOne({ txid });
       res.status(200).send(tx);
     } catch (e) {
       res.status(500).send('Internal Server Error');
-    }*/
-
+    } */
   });
   app.get(`${API_PREFIX}/transactions/`, async (req, res) => {
     try {

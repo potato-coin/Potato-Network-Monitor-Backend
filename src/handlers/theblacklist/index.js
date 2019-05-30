@@ -7,14 +7,15 @@ const potatoApi = createPotatoApi();
 
 const getBlackList = async () => {
   try {
-    const { rows: data } = await potatoApi.get_table_rows({
-      scope: 'theblacklist',
-      code: 'theblacklist',
-      table: 'theblacklist',
-      json: true,
-      limit: 10000,
-    });
+    // const { rows: data } = await potatoApi.get_table_rows({
+    //   scope: 'theblacklist',
+    //   code: 'theblacklist',
+    //   table: 'theblacklist',
+    //   json: true,
+    //   limit: 10000,
+    // });
     let allAccounts = [];
+    const data = [];
     data.forEach(e => {
       if (e.action === 'add') {
         allAccounts.push(...e.accounts);
