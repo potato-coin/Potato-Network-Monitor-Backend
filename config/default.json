@@ -5,31 +5,31 @@
   },
   "VERSION": "2.0",
   "NODE": {
-    "HOST": "https://potato.jocky123.com",
+    "HOST": "https://potato.potatocoin.com",
     "PORT": "443",
     "ALLOWABLE_MAX_PING": 150 // in ms. When ping is greater than this value, the node will be changed
   },
   "RESERVE_NODES": [
     {
-      "HOST": "https://eu.eosdac.io",
+      "HOST": "https://potato.potatocoin.com",
       "PORT": "443"
     },
     {
-      "HOST": "http://api.eossweden.se",
+      "HOST": "http://potato.potatocoin.com",
       "PORT": "80"
     }
   ],
   "NODE_WITH_HISTORY": {
-    "HOST": "https://history.cryptolions.io",
+    "HOST": "https://history.potatocoin.com",
     "PORT": "443"
   },
   "MONGODB": {
-    "ADDRESS": "mongodb://192.168.0.71:27017/",
+    "ADDRESS": "mongodb://127.0.0.1:27017/",
     "DB_NAME": "MainNet",
     "AUTH_IS_REQUIRED": false,
     "AUTH_SOURCE": "admin",
-    "USER": "eosdev23",
-    "PASSWORD": "eosdev23"
+    "USER": "test",
+    "PASSWORD": "test"
   },
   "POTATO": {
     "GET_INFO_API_PATH": "/potato/chain/get_info", // api_get_info
@@ -60,19 +60,21 @@
   "ROUNDS_OFF_TO_DISABLE_PROD": 4320, //Disable table when #count rounds is without answer
   "REMOVE_OLD_NODES": true,
   "INSERT_MOCK_NODES": true,
-  "DEFAULT_P2P_PEERS": "jungle.cryptolions.io:19876",
+  "DEFAULT_P2P_PEERS": "jungle.potatocoin.com:19876",
   // DEFAULT_P2P_PEERS: ' \
-  // #p2p-peer-address = jungle.cryptolions.io:19876 \
+  // #p2p-peer-address = jungle.potatocoin.com:19876 \
   // ',
   "ENABLE_CORS_SUPPORT": false,
   "WHITE_LIST": [
     "localhost:3000",
     "localhost:3002",
     "localhost:4000",
-    "51.15.208.65:3010",
-    "eosnetworkmonitor.io:8000",
-    "eosnetworkmonitor.io:3000",
-    "eosnetworkmonitor.io"
+    "monitor.potatocoin.com:8000",
+    "monitor.potatocoin.com:3000",
+    "monitor.potatocoin.com",
+    "monitor.jocky123.com:8000",
+    "monitor.jocky123.com:3000",
+    "monitor.jocky123.com"
   ],
   "LISTENERS": {
     "ON_USERS_COUNT_CHANGE_INTERVAL": 1000, // in ms, if 0 calls listener when users count change
