@@ -10,7 +10,7 @@ const sharp 	= require('sharp');
 const { connect: connectToDB } = require('../../db');
 const { ProducerModelV2 }  	   = require('../../db');
 
-const defaultImg = '/eosio.png';
+const defaultImg = '/potato.png';
 const bpsImg = '/images/bps/';
 const bpsImgPath = path.join(__dirname, '../../cache/images/bps/');
 

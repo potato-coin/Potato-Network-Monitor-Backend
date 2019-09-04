@@ -72,6 +72,10 @@
     "monitor.potatocoin.com:8000",
     "monitor.potatocoin.com:3000",
     "monitor.potatocoin.com",
+    "newmonitor.potatocoin.com:8000",
+    "newmonitor.potatocoin.com:3000",
+    "newmonitor.potatocoin.com",
+    "monitor.potatocoin.com",
     "monitor.jocky123.com:8000",
     "monitor.jocky123.com:3000",
     "monitor.jocky123.com"
@@ -86,7 +90,7 @@
     "ON_UNREGISTEREDS_INTERVAL": 5000 // must be greater than 0
   },
   "API_PREFIX": "/api/v1",
-  "BLACK_PRODUCERS_LIST": [{ "key": "EOS1111111111111111111111111111111114T1Anm" }],
+  "BLACK_PRODUCERS_LIST": [{ "key": "POC1111111111111111111111111111111114T1Anm" }],
   "TIMESTAMP_EPOCH": 946684800,
   "MAX_TRANSACTIONS_PER_CONNECT_BY_SOCKET": 50,
   "ALLOWABLE_NON_SYNCHRONIZED_DIFFERENCE_IN_BLOCKS": 100,
